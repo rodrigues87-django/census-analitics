@@ -1,0 +1,7 @@
+REGRECAO_LOGISTICA = "regressao_logistica"
+ARVORES_DE_DECISAO = "arvores_decisao"
+KNN = "knn"
+NAIVE_BAYES = "naive_bayes"
+RANDOM_FOREST = "random_forest"
+REGRAS = "regras"
+SVM = "svm"

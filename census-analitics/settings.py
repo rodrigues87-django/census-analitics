@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'corsheaders',
     'usuarios',
+    'census',
+    'machine_learning_model'
 ]
 
 DATE_INPUT_FORMATS = ('%d-%m-%Y', '%Y-%m-%d')
