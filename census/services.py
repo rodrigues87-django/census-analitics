@@ -17,6 +17,7 @@ def treinar_arvores_de_decisao_census():
     machine_learning_model = get_census_data()
     machine_learning_model.treinar_arvores_decisao()
     salvar_modelo(machine_learning_model)
+    print("treinar_arvores_de_decisao_census")
     return machine_learning_model
 
 
@@ -24,6 +25,8 @@ def treinar_regressao_logistica_census():
     machine_learning_model = get_census_data()
     machine_learning_model.treinar_regressao_logistica()
     salvar_modelo(machine_learning_model)
+    print("treinar_regressao_logistica_census")
+
     return machine_learning_model
 
 
@@ -31,6 +34,8 @@ def treinar_knn_census():
     machine_learning_model = get_census_data()
     machine_learning_model.treinar_knn()
     salvar_modelo(machine_learning_model)
+    print("treinar_knn_census")
+
     return machine_learning_model
 
 
@@ -38,6 +43,8 @@ def treinar_naive_bayes_census():
     machine_learning_model = get_census_data()
     machine_learning_model.treinar_naive_bayes()
     salvar_modelo(machine_learning_model)
+    print("treinar_naive_bayes_census")
+
     return machine_learning_model
 
 
@@ -45,6 +52,8 @@ def treinar_random_forest_census():
     machine_learning_model = get_census_data()
     machine_learning_model.treinar_random_forest()
     salvar_modelo(machine_learning_model)
+    print("treinar_random_forest_census")
+
     return machine_learning_model
 
 
@@ -52,6 +61,8 @@ def treinar_svm_census():
     machine_learning_model = get_census_data()
     machine_learning_model.treinar_svm()
     salvar_modelo(machine_learning_model)
+    print("treinar_svm_census")
+
     return machine_learning_model
 
 

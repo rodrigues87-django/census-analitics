@@ -2,7 +2,6 @@ import django
 
 django.setup()
 
-from unittest import TestCase
 from census.services import *
 from machine_learning_model.constants import *
 
