@@ -16,7 +16,7 @@ class CensusListView(ListView):
     template_name = 'census.html'  # Default: <app_label>/<model_name>_list.html
     context_object_name = 'census_list'  # Default: object_list
     paginate_by = 10
-    queryset = Census.objects.all()
+    queryset = Census.objects.all().order_by('id')
 
 
 def home(request):
