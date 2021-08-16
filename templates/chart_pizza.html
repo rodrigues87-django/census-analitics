@@ -1,0 +1,57 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Precisão dos modelos treinados</h4>
+    </div>
+    <div class="card-body">
+        <div id="mymodel"></div>
+    </div>
+</div>
+
+<script>
+
+    data_precisao = []
+    biblioteca_usada = []
+
+    var modelos = {{ modelos_json|safe }};
+
+    for (modelo in modelos){
+        objeto = modelos[modelo]
+
+        data_precisao.push(objeto.precisao * 100);
+        biblioteca_usada.push(objeto.biblioteca_usada)
+
+
+    }
+
+
+
+
+    new ApexCharts(document.getElementById("mymodel"),
+        {
+	annotations: {
+		position: 'back'
+	},
+	dataLabels: {
+		enabled:false
+	},
+	chart: {
+		type: 'bar',
+		height: 300
+	},
+	fill: {
+		opacity:1
+	},
+	plotOptions: {
+	},
+	series: [{
+		name: 'sales',
+		data: data_precisao
+	}],
+	colors: '#435ebe',
+	xaxis: {
+		categories: biblioteca_usada,
+	},
+}
+    ).render()
+
+</script>

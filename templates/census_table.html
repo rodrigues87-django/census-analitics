@@ -1,0 +1,76 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Census Data</h4>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped" id="table1">
+            <thead>
+            <tr>
+                <th>Idade</th>
+                <th>Educação</th>
+                <th>Salário</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for census in census_list %}
+
+                <tr>
+                    <td>{{ census.age }}</td>
+                    <td>{{ census.education }}</td>
+                    <td>{{ census.income }}</td>
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+        </table>
+
+        <div class="dataTable-bottom">
+            <div class="dataTable-info">
+
+            </div>
+
+            {% if is_paginated %}
+                <ul class="pagination pagination-primary float-end dataTable-pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item pager"><a class="page-link"
+                                                       href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                                </li>
+                            {% endif %}
+
+                            <li class="page-item active">
+                                <span class="page-link">{{ i }} <span></span></span>
+                            </li>
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link"
+                                                         href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                                </li>
+                            {% endif %}
+
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link"
+                                                 href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+
+                    {% endif %}
+                </ul>
+            {% endif %}
+
+        </div>
+
+
+    </div>
+    <script>
+        // Simple Datatable
+        let table1 = document.querySelector('#table1');
+        let dataTable = new simpleDatatables.DataTable(table1);
+    </script>
