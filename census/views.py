@@ -1,16 +1,15 @@
-from django.forms import ModelForm
 from django.shortcuts import render
-import json
 
 # Create your views here.
-from django.core import serializers
-from django.views.generic import ListView, TemplateView, FormView, CreateView
+from django.views.generic import ListView, CreateView
 from rest_framework.renderers import JSONRenderer
 
 from census.forms import CensusForm
 from census.models import Census
 from machine_learning_model.api.serializers import MachineLearningModelSerializer
+from machine_learning_model.constants import ARVORES_DE_DECISAO
 from machine_learning_model.models import MachineLearningModel
+from census.services import abrir_census
 
 
 class CensusListView(ListView):
@@ -30,6 +29,13 @@ class CensusFormView(CreateView):
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
+        model_instance = form.save(commit=False)
+
+        machine_learning_model = abrir_census(ARVORES_DE_DECISAO)
+
+        machine_learning_model.definir_previsao(model_instance)
+        machine_learning_model.definir_precisao()
+
         return super().form_valid(form)
 
 

@@ -7,7 +7,7 @@
                 </div>
                 <div class="card-content">
                     <div class="card-body">
-                        <form class="form" method="post">
+                        <form class="form" method="post">{% csrf_token %}
                             <div class="row">
                                 <div class="col-md-3 col-12">
                                     <div class="form-group">
@@ -47,7 +47,7 @@
                                 <div class="col-md-3 col-12">
                                     <div class="form-group">
                                         <label for="email-id-column">Estado civil</label>
-                                        <input type="email" id="email-id-column" class="form-control"
+                                        <input type="text" id="email-id-column" class="form-control"
                                                name="marital_status" placeholder="">
                                     </div>
                                 </div>
@@ -61,49 +61,49 @@
                                 <div class="col-md-3 col-12">
                                     <div class="form-group">
                                         <label for="email-id-column">Relação</label>
-                                        <input type="email" id="email-id-column" class="form-control"
+                                        <input type="text" id="email-id-column" class="form-control"
                                                name="relationship" placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-12">
                                     <div class="form-group">
                                         <label for="email-id-column">Raça</label>
-                                        <input type="email" id="email-id-column" class="form-control"
+                                        <input type="text" id="email-id-column" class="form-control"
                                                name="race" placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-12">
                                     <div class="form-group">
                                         <label for="email-id-column">Sexo</label>
-                                        <input type="email" id="email-id-column" class="form-control"
+                                        <input type="text" id="email-id-column" class="form-control"
                                                name="sex" placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-12">
                                     <div class="form-group">
                                         <label for="email-id-column">Ganho de capital</label>
-                                        <input type="email" id="email-id-column" class="form-control"
+                                        <input type="text" id="email-id-column" class="form-control"
                                                name="capital_gain" placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-12">
                                     <div class="form-group">
                                         <label for="email-id-column">perda de capital</label>
-                                        <input type="email" id="email-id-column" class="form-control"
+                                        <input type="text" id="email-id-column" class="form-control"
                                                name="capital_loos" placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-12">
                                     <div class="form-group">
                                         <label for="email-id-column">hora por semana</label>
-                                        <input type="email" id="email-id-column" class="form-control"
+                                        <input type="text" id="email-id-column" class="form-control"
                                                name="hour_per_week" placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-12">
                                     <div class="form-group">
                                         <label for="email-id-column">Nacionalidade</label>
-                                        <input type="email" id="email-id-column" class="form-control"
+                                        <input type="text" id="email-id-column" class="form-control"
                                                name="native_country" placeholder="">
                                     </div>
                                 </div>

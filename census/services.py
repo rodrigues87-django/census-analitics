@@ -73,7 +73,7 @@ def salvar_modelo(machine_learning_model):
     machine_learning_model.save()
 
 
-def get_census_data():
+def get_data():
     machine_learning_model = MachineLearningModel()
 
     base = pd.DataFrame(list(Census.objects.all().values()))

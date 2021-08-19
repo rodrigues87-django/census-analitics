@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'usuarios',
     'census',
-    'machine_learning_model'
+    'machine_learning_model',
+    'previsoes'
 ]
 
 DATE_INPUT_FORMATS = ('%d-%m-%Y', '%Y-%m-%d')
