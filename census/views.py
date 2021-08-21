@@ -1,15 +1,19 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 # Create your views here.
+from django.urls import reverse
 from django.views.generic import ListView, CreateView
 from rest_framework.renderers import JSONRenderer
 
 from census.forms import CensusForm
 from census.models import Census
 from machine_learning_model.api.serializers import MachineLearningModelSerializer
-from machine_learning_model.constants import ARVORES_DE_DECISAO
+from machine_learning_model.constants import ARVORES_DE_DECISAO, REGRESSAO_LOGISTICA
 from machine_learning_model.models import MachineLearningModel
 from census.services import abrir_census
+from previsoes.forms import PrevisaoForm
+from previsoes.models import Previsao
 
 
 class CensusListView(ListView):
@@ -21,8 +25,8 @@ class CensusListView(ListView):
 
 
 class CensusFormView(CreateView):
-    model = Census
-    form_class = CensusForm
+    model = Previsao
+    form_class = PrevisaoForm
     template_name = 'previsoes.html'  # Default: <app_label>/<model_name>_list.html
     context_object_name = 'form'
 
@@ -30,13 +34,21 @@ class CensusFormView(CreateView):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
         model_instance = form.save(commit=False)
+        model_instance.save()
 
-        machine_learning_model = abrir_census(ARVORES_DE_DECISAO)
+        machine_learning_model = MachineLearningModel()
 
-        machine_learning_model.definir_previsao(model_instance)
+        machine_learning_model.open_classificador(Census, REGRESSAO_LOGISTICA)
+        query = Previsao.objects.filter(id=model_instance.id)
+        machine_learning_model.get_data(query)
         machine_learning_model.definir_precisao()
 
-        return super().form_valid(form)
+        if machine_learning_model.previsao[0] == 1:
+            self.previsao = "Salario maior que 50.000$"
+        else:
+            self.previsao = "Salario menor que 50.000$"
+
+        return render(self.request, 'previsoes.html', {'previsao': self.previsao})
 
 
 def home(request):

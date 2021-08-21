@@ -16,8 +16,8 @@ import pandas as pd
 class TestMachineLearningModel(TestCase):
 
     def test_prever_regressao_logistica(self):
-        machine_learning_model = MachineLearningModel(REGRESSAO_LOGISTICA, Census)
-
+        machine_learning_model = MachineLearningModel()
+        machine_learning_model.open_classificador(REGRESSAO_LOGISTICA, Census)
         previsao = Previsao()
         previsao.age = 40
         previsao.workclass = "State-gov"
@@ -36,7 +36,7 @@ class TestMachineLearningModel(TestCase):
         previsao.save()
 
         query = Previsao.objects.filter(id=previsao.id)
-
         machine_learning_model.get_data(query)
+        machine_learning_model.definir_precisao()
 
         print("termino")

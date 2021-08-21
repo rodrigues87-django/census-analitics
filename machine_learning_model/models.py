@@ -36,30 +36,26 @@ class MachineLearningModel(Model):
     datetime = DateTimeField(auto_now_add=True)
     classe_modelo = None
 
-    def __init__(self, biblioteca_usada, classe_modelo, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def open_classificador(self, classe_modelo, biblioteca_usada):
         self.classe_modelo = classe_modelo
         self.biblioteca_usada = biblioteca_usada
 
-        self.open_classificador()
-        self.definir_precisao()
-
-
-    def open_classificador(self):
         try:
             with open(self.biblioteca_usada + '.pkl', 'rb') as f:
                 self.classificador = pickle.load(f)
         except Exception as e:
             print(e)
+            query_data = self.classe_modelo.objects.all()
+            self.get_data(query_data)
             self.treinar_modelo()
+            self.definir_precisao()
 
     def save_classificador(self):
         with open(self.biblioteca_usada + '.pkl', 'wb') as f:
             pickle.dump(self.classificador, f)
 
     def treinar_modelo(self):
-        query_data = self.classe_modelo.objects.all()
-        self.get_data(query_data)
+
         self.dividir_base_previsores_classe()
 
         if self.biblioteca_usada is REGRESSAO_LOGISTICA:
