@@ -1,5 +1,6 @@
 import joblib
 import numpy as np
+from ndarraydjango.fields import NDArrayField
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import confusion_matrix, accuracy_score
@@ -14,9 +15,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from census.models import Census
 
@@ -42,8 +42,20 @@ class MachineLearningModel(Model):
         self.biblioteca_usada = biblioteca_usada
 
         self.open_classificador()
-        if self.classificador is None:
+        self.definir_precisao()
+
+
+    def open_classificador(self):
+        try:
+            with open(self.biblioteca_usada + '.pkl', 'rb') as f:
+                self.classificador = pickle.load(f)
+        except Exception as e:
+            print(e)
             self.treinar_modelo()
+
+    def save_classificador(self):
+        with open(self.biblioteca_usada + '.pkl', 'wb') as f:
+            pickle.dump(self.classificador, f)
 
     def treinar_modelo(self):
         query_data = self.classe_modelo.objects.all()
@@ -64,22 +76,10 @@ class MachineLearningModel(Model):
             self.treinar_svm()
         self.classificador.fit(self.previsores_treinamento, self.classe_treinamento)
 
-        self.definir_precisao()
         self.save_classificador()
 
-    def open_classificador(self):
-        try:
-            with open(self.biblioteca_usada + '.pkl', 'rb') as f:
-                self.classificador = pickle.load(f)
-        except Exception:
-            self.classificador = None
-
-    def save_classificador(self):
-        with open(self.biblioteca_usada + '.pkl', 'wb') as f:
-            pickle.dump(self.classificador, f)
-
     def treinar_regressao_logistica(self):
-        self.classificador = LogisticRegression()
+        self.classificador = LogisticRegression(max_iter=10)
 
     def treinar_arvores_decisao(self):
         self.classificador = DecisionTreeClassifier(criterion='entropy', random_state=0)
@@ -95,12 +95,6 @@ class MachineLearningModel(Model):
 
     def treinar_svm(self):
         self.classificador = SVC(kernel='linear', random_state=1)
-
-    def definir_precisao(self):
-        self.previsao = self.classificador.predict(self.previsores_teste)
-        if(self.classe_teste is not None):
-            self.precisao = accuracy_score(self.classe_teste, self.previsao)
-            self.matriz = confusion_matrix(self.classe_teste, self.previsao)
 
     def get_data(self, query_data):
 
@@ -134,18 +128,21 @@ class MachineLearningModel(Model):
 
         if len(previsores) > 1:
 
-            self.previsores = onehotencoder.fit_transform(previsores)
             onehot = onehotencoder.fit(previsores)
-            self.previsores = onehot.transform(previsores).toarray()
+            previsores = onehot.transform(previsores).toarray()
+
+            scaler = StandardScaler()
+            self.previsores = scaler.fit_transform(previsores)
 
             joblib.dump(onehot, onehotencoder_name)
-
-
+            joblib.dump(scaler, myscaler_name)
 
         else:
             onehot = joblib.load(onehotencoder_name)
+            scaler = joblib.load(myscaler_name)
 
-            self.previsores = onehot.transform(previsores).toarray()
+            previsores = onehot.transform(previsores).toarray()
+            self.previsores = scaler.fit_transform(previsores)
 
         print("termino codificacao")
 
@@ -158,3 +155,13 @@ class MachineLearningModel(Model):
                 random_state=0)
 
         print("termino divisao")
+
+    def definir_precisao(self):
+        if self.previsores_teste is None:
+            self.previsores_teste = self.previsores
+
+        self.previsao = self.classificador.predict(self.previsores_teste)
+
+        if self.classe_teste is not None:
+            self.precisao = accuracy_score(self.classe_teste, self.previsao)
+            self.matriz = confusion_matrix(self.classe_teste, self.previsao)

@@ -5,7 +5,6 @@ django.setup()
 
 from previsoes.models import Previsao
 
-
 from unittest import TestCase
 
 from census.models import Census
@@ -18,6 +17,7 @@ class TestMachineLearningModel(TestCase):
 
     def test_prever_regressao_logistica(self):
         machine_learning_model = MachineLearningModel(REGRESSAO_LOGISTICA, Census)
+
         previsao = Previsao()
         previsao.age = 40
         previsao.workclass = "State-gov"
@@ -38,11 +38,5 @@ class TestMachineLearningModel(TestCase):
         query = Previsao.objects.filter(id=previsao.id)
 
         machine_learning_model.get_data(query)
-
-        machine_learning_model.previsores_teste = machine_learning_model.previsores
-
-        machine_learning_model.definir_precisao()
-
-
 
         print("termino")
